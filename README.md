@@ -12,7 +12,7 @@ datediff -s|--start-date \<date format\> [-e|--end-date \<date format\>] [-t|--t
 
 \<time unit\>:  
 [human-readable | seconds | minutes | hours | days]
-    default:  human-readable
+default:  human-readable
 
 end date: default: now ($now)
 
