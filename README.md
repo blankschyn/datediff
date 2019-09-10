@@ -1,6 +1,9 @@
 # datediff
 a shell script to calculate date differences in different time units.
 
+requirements:
+bash, bc
+
 usage:
 datediff -s|--start-date <date format> [-e|--end-date <date format>] [-t|--time-unit <time unit>] 
 
