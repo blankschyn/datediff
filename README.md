@@ -5,12 +5,12 @@ requirements:
 bash, bc
 
 usage:
-datediff -s|--start-date <date format> [-e|--end-date <date format>] [-t|--time-unit <time unit>] 
+datediff -s|--start-date \<date format\> [-e|--end-date \<date format\>] [-t|--time-unit \<time unit\>] 
 
-<date format>: 
+\<date format\>: 
 \"YYYY-MM-DD [HH24:MI:SS]\"
 
-<time unit>:  
+\<time unit\>:  
 [human-readable | seconds | minutes | hours | days]
     default:  human-readable
 
