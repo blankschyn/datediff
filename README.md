@@ -7,9 +7,11 @@ bash, bc
 usage:
 datediff -s|--start-date <date format> [-e|--end-date <date format>] [-t|--time-unit <time unit>] 
 
-<date format>: \"YYYY-MM-DD [HH24:MI:SS]\"
+<date format>: 
+\"YYYY-MM-DD [HH24:MI:SS]\"
 
-<time unit>:  [human-readable | seconds | minutes | hours | days]
+<time unit>:  
+[human-readable | seconds | minutes | hours | days]
     default:  human-readable
 
 end date: default: now ($now)
