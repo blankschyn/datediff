@@ -25,7 +25,7 @@ $functionName -s|--start-date <date format> [-e|--end-date <date format>] [-t|--
 
 end date: default: now ($now)
 
-example: $functionName -s \"2019-09-10 14:25:14\" -e \"2019-09-10 14:40:00\"" -t seconds
+example: $functionName -s \"2019-09-10 14:25:14\" -e \"2019-09-10 14:40:00\" -t seconds"
 }
 
 if [ $# -lt 2 ]; then
@@ -64,7 +64,13 @@ fi
 
 #format the given date string in seconds for calculation 
 startDate="$(date -d "$startDate" +%s)"
+if [ $? -ne 0 ]; then
+    exit 1
+fi
 endDate="$(date -d "$endDate" +%s)"
+if [ $? -ne 0 ]; then
+    exit 1
+fi
 
 #set divisor for chosen time unit
 case $timeUnit in 
