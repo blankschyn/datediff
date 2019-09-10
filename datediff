@@ -1,0 +1,99 @@
+#/usr/bin/env bash
+#little helper to calculate date differences.
+#for usage notes, please read the usage function
+#
+#written by Maximilian Blankschyn
+#10.09.2019
+
+functionName="$(basename "$0")"
+unset timeUnit startDate endDate divisor now all
+
+now="$(date +"%Y-%m-%d %H:%M:%S")"
+
+if ! which bc 1>/dev/null 2>&1; then
+    echo "'bc' is required. Please install and try again."
+    exit 1
+fi
+function usage {
+echo "usage: 
+$functionName -s|--start-date <date format> [-e|--end-date <date format>] [-t|--time-unit <time unit>] 
+
+<date format>: \"YYYY-MM-DD [HH24:MI:SS]\"
+
+<time unit>:  [human-readable | seconds | minutes | hours | days]
+    default:  human-readable
+
+end date: default: now ($now)
+
+example: $functionName -s \"2019-09-10 14:25:14\" -e \"2019-09-10 14:40:00\"" -t seconds
+}
+
+if [ $# -lt 2 ]; then
+    usage
+    exit
+fi
+
+while [ -n "$1" ]; do
+    case $1 in
+        -t | --time-unit )          shift
+                                    if [ -z "$timeUnit" ]; then timeUnit=$1; else echo "only one time unit [ human-readble | seconds | minutes | days ] is supported."; exit 2; fi
+                                    shift;;
+
+        -s | --start-date )         shift
+                                    if [ -z "$startDate" ]; then startDate=$1; else echo "only one start date is supported."; exit 2; fi 
+                                    shift;;
+
+        -e | --end-date)            shift
+                                    if [ -z "$endDate" ]; then endDate=$1; else echo "only one end date is supported."; exit 2; fi
+                                    shift;;
+
+        -h | --help )               usage
+                                    exit 0 ;;
+        * )                         usage
+                                    exit 2 ;;
+        esac
+done
+
+if [ -z "$timeUnit" ]; then
+    timeUnit=human-readable
+fi
+
+if [ -z "$endDate" ]; then
+    endDate="$now"
+fi
+
+#format the given date string in seconds for calculation 
+startDate="$(date -d "$startDate" +%s)"
+endDate="$(date -d "$endDate" +%s)"
+
+#set divisor for chosen time unit
+case $timeUnit in 
+    seconds )               divisor=1 ;;
+    minutes )               divisor=60 ;;
+    hours )                 divisor=3600 ;;
+    days )                  divisor=86400 ;;
+    human-readable )        true ;; #nothing else to do here
+    * )                     echo "unknown time unit : $timeUnit"; exit 3 ;;
+esac
+
+
+
+if [ "$timeUnit" == "human-readable" ]; then
+    days=$(( (endDate - startDate) / 86400 ))
+    hours=$(( (endDate - startDate ) / 3600 ))
+    minutes=$(( (endDate - startDate) / 60 ))
+    seconds=$(( (endDate - startDate) / 1 ))
+
+    rhours=$(( (endDate - startDate - (days * 86400)) / 3600 ))
+    rminutes=$(( (endDate - startDate - (hours * 3600)) / 60 ))
+    rseconds=$(( (endDate - startDate - (minutes * 60)) / 1 ))
+
+    echo "
+Days: $days 
+Hours: $rhours 
+Minutes: $rminutes 
+Seconds: $rseconds"
+
+else
+    echo "scale=4; ($endDate - $startDate) / $divisor" | bc
+fi
