@@ -6,7 +6,7 @@
 #10.09.2019
 
 functionName="$(basename "$0")"
-unset timeUnit startDate endDate divisor now all
+unset timeUnit startDate endDate divisor now
 
 now="$(date +"%Y-%m-%d %H:%M:%S")"
 
